@@ -1,4 +1,4 @@
-# Arcade Tennis Game
+# 🕹️ Arcade Tennis Game 🎾
 **Arcade Themed Tennis Game Using HTML Canvas &amp; JavaScript**
 
 <br>
