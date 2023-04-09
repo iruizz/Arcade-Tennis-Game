@@ -21,7 +21,7 @@ window.onload = function (){
     canvasContext = canvas.getContext("2d"); // 2D canvas
     setInterval(game,1000/30); // calls game() on interval
     
-    
+    // To start first game/new game click
     canvas.addEventListener("mousedown", handleMouseClick);
 
     // continously match height of paddle to mouse 
@@ -33,7 +33,11 @@ window.onload = function (){
    
    
 }
-// runs the game
+
+// runs the game loop
+// change the location of stuff
+// then draw the stuff
+// continously repeat
 function game(){
     moveThings();
     drawThings();
@@ -52,11 +56,11 @@ function paddleAI() {
         paddle2Y-=12.5;
     }
 }
+
 function moveThings(){
         if(winCondition){
             return;
         }
-
 
         // function to move AI paddle
         paddleAI();
@@ -154,16 +158,19 @@ function drawThings(){
     // Draws Ball
     colorCircle(ballX, ballY, 10, "white");
 
-    // Score 
-    canvasContext.font = "40px ArcadeClassic";
+    // Score Printing
+    canvasContext.font = "40px ArcadeClassic"; // use arcade font
+    
+     // Set the fill style and shadow properties for player 1 Score
     canvasContext.fillStyle = "rgb(255, 0, 230)"; // fill color
     canvasContext.shadowBlur = 40; // Shadow blur radius
     canvasContext.shadowColor = "rgba(255, 0, 230, 0.3)"; // Shadow color with alpha
     canvasContext.fillText(player1Score, 100, 100);
-     // Set the fill style and shadow properties
-     canvasContext.fillStyle = "rgb(0, 200, 200)"; // fill color
-     canvasContext.shadowBlur = 40; // Shadow blur radius
-     canvasContext.shadowColor = "rgba(0, 200, 200, 0.3)"; // Shadow color with alpha
+    
+     // Set the fill style and shadow properties for player 2 Score
+    canvasContext.fillStyle = "rgb(0, 200, 200)"; // fill color
+    canvasContext.shadowBlur = 40; // Shadow blur radius
+    canvasContext.shadowColor = "rgba(0, 200, 200, 0.3)"; // Shadow color with alpha
     canvasContext.fillText(player2Score, canvas.width-100, 100);
 
     
@@ -178,7 +185,7 @@ function colorCircle(centerX, centerY, radius, drawColor) {
 // The outer circle is at centerX, centerY, with radius= radius
 const gradient = canvasContext.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
 
-// Add thre color stops
+// Add three color stops
 gradient.addColorStop(0,  "rgb(168, 66, 162)");
 gradient.addColorStop(0.5,"rgb(196, 20, 240)");
 gradient.addColorStop(1,  "rgb(80, 206, 225)");
@@ -186,53 +193,56 @@ gradient.addColorStop(1,  "rgb(80, 206, 225)");
 
 // Set the fill style and draw a rectangle
 canvasContext.fillStyle = gradient;
-//canvasContext.fillRect(20, 20, 160, 160);
 
-    //canvasContext.fillStyle = drawColor;
-    canvasContext.beginPath();
-    canvasContext.arc(centerX,centerY,radius,0,Math.PI*2,true);
-   canvasContext.fill();
-   canvasContext.fillStyle = drawColor; //reset color 
+//canvasContext.fillStyle = drawColor;
+canvasContext.beginPath();
+canvasContext.arc(centerX,centerY,radius,0,Math.PI*2,true);
+canvasContext.fill();
+canvasContext.fillStyle = drawColor; //reset color 
 
 }
 
 // For coloring items
 function colorRect(leftX,topY, width, height, drawColor) {
 
-    if(drawColor == "fancy"){
-    const BGgradient = canvasContext.createLinearGradient(0, 0, width, 0);
-    // Add three color stops
-    BGgradient.addColorStop(0, "rgb(40,40,40)");
-    BGgradient.addColorStop(0.5, "black");
-    BGgradient.addColorStop(1, "rgb(40,40,40)");
-    canvasContext.fillStyle = BGgradient; 
-    canvasContext.fillRect(leftX,topY,width, height);
-    // reset
-    canvasContext.fillStyle = "white"; 
+    if(drawColor == "fancy"){ // unused, if we want the canvas to be a grey-black gradient
+        const BGgradient = canvasContext.createLinearGradient(0, 0, width, 0);
+
+        // Add three color stops
+        BGgradient.addColorStop(0, "rgb(40,40,40)");
+        BGgradient.addColorStop(0.5, "black");
+        BGgradient.addColorStop(1, "rgb(40,40,40)");
+        canvasContext.fillStyle = BGgradient; 
+        canvasContext.fillRect(leftX,topY,width, height);
+
+        // reset
+        canvasContext.fillStyle = "white"; 
     }
-    else if(drawColor == "glow"){
+    else if(drawColor == "glow"){ // purple glow
+        
         // Set the fill style and shadow properties
         canvasContext.fillStyle = "rgb(255, 0, 230)"; // fill color
         canvasContext.shadowBlur = 20; // Shadow blur radius
         canvasContext.shadowColor = "rgba(255, 0, 230, 0.5)"; // Shadow color with alpha
         canvasContext.fillRect(leftX,topY,width, height);
+
         //reset
         canvasContext.fillStyle = "white";
-
     }
-    else if(drawColor == "glow2"){
+    else if(drawColor == "glow2"){ // cyan glow
         // Set the fill style and shadow properties
         canvasContext.fillStyle = "rgb(0, 200, 200)"; // fill color
         canvasContext.shadowBlur = 20; // Shadow blur radius
         canvasContext.shadowColor = "rgba(0, 200, 200, 0.5)"; // Shadow color with alpha
         canvasContext.fillRect(leftX,topY,width, height);
+        
         //reset
         canvasContext.fillStyle = "white";
 
     }
     else{
-    canvasContext.fillStyle = drawColor; 
-    canvasContext.fillRect(leftX,topY,width, height);
+        canvasContext.fillStyle = drawColor; 
+        canvasContext.fillRect(leftX,topY,width, height);
     }
 
 }
@@ -243,12 +253,12 @@ function mousePosition(evt){
     var root = document.documentElement;
     var mouseX = evt.clientX - rect.left - root.scrollLeft;
     var mouseY = evt.clientY - rect.top - root.scrollTop;
-    return {x:mouseX, y:mouseY};
+    return {x:mouseX, y:mouseY}; 
 }
 
 // place ball back in middle going in opposite direction
 function resetBall(){
-    ballSpeedX = -ballSpeedX;
+    ballSpeedX = -ballSpeedX; //invert direction
     ballX = canvas.width/2;
     ballY = canvas.height/2;
     if (player1Score >= WINNING_SCORE || player2Score >= WINNING_SCORE ) {
@@ -256,7 +266,7 @@ function resetBall(){
     }
 }
 
-// Reset scores after someone wins
+// Reset scores after someone wins or waits for a click to start game
 function handleMouseClick(){
     if(winCondition){
         player1Score=player2Score=0;
@@ -266,19 +276,20 @@ function handleMouseClick(){
 
 // draws the line down the middle
 function drawNet(color){
-   
     for(var y =0; y < canvas.height;y+=40){
         colorRect(canvas.width/2-1,y,2,20,color); 
     }
 }
 
-// draws the line down the middle
+// draws the court lines
 function drawCourt(color){
+    
     // horizontal (floor & ceiling)
     for(var x =0; x < canvas.width;x+=40){
         colorRect(x , canvas.height-3,35,3,color); 
         colorRect(x ,0,35,3,color); 
     }
+    
     //vertical(walls)
     for(var y =0; y < canvas.height;y+=40){
         colorRect(canvas.width-3, y,3,40,"glow2"); 
