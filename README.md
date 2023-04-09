@@ -1,5 +1,5 @@
-# Arcade Ping Pong Game
-**Arcade Themed Ping Pong Game Using HTML Canvas &amp; JavaScript**
+# Arcade Tennis Game
+**Arcade Themed Tennis Game Using HTML Canvas &amp; JavaScript**
 
 <br>
 
